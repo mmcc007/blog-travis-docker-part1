@@ -1,28 +1,10 @@
 sudo: required
 services:
   - docker
-env:
-  global:
-    - REGISTRY_USER=testblogdeploy
-    - secure: "cvPCHiU4HMAYy9M5EAT2/b/0fuuTtFdAxsZHDNdaMphIifaL76r1fkB+o/DchXe49MGHalXIKqxB88756HUNyALbLQSlkEvZ/U1I5tNd+PovGvW+DpD2Tq/NCA8mC/6Q3kXL7hIZD3HjgVFbnL23m22V/h/ccf/RrFqjiJTsuGnRFPealiKusEC/b9qTrJGvsiJtIUoHhHofrB1fI/7rVsSHQhoTM37GBOFOAQ8Ksy3LJMjjSdgTfjnhkzHbvwA0bxOanL/aXKUJN4GClx830dMvzSd5DTSjbOoQyls7j9diiw4jbUWFJPvkYgHdmbSM4Tmb89iRMXAPq0txdWztrvamlyQTmWCh621v6km7+4+CcszV+YKd3mZUrdFWw3pdfYdY+/jyNJS/503MHQGK9LU6JlAfOfyVGEZnh7GWWqDxVoCKeP3f1g6sAFLRU7EUN/TG08aBH0kZSO2nFW/AK7DIwuPPyOx4ieibmABPxGM8t+ScYcAUO7KhzrhEqu65tmQKCwZXpXVqG3nv7SFmxJTR0+Q1oaPZpSxYx3hdbs+JtVrRzBAVwA92T2RQnmIVmNTK6M8tPku2XaLc4VYVMP389zuop+HnIYhlPL+S6bwemkg0lF/n7qQz7f6u0+BRl29VuimrNKA6YgLD36RAwOW7NaVhpXC7QA1qJ2qAh4M="
 
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y -o Dpkg::Options::="--force-confold" docker-engine
-
-before_script:
-  - docker pull testblogorganization/cowspeak || true
 script:
-  - docker build --pull --cache-from testblogorganization/cowspeak --tag testblogorganization/cowspeak .
-  - docker run testblogorganization/cowspeak
+  - docker build --tag myimage .
+  - docker run myimage
 
 after_script:
   - docker images
-
-before_deploy:
-  - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
-deploy:
-  provider: script
-  script: docker push testblogorganization/cowspeak
-  on:
-    branch: master
