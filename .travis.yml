@@ -1,13 +1,15 @@
 sudo: required
 services:
-- docker
+  - docker
+before_script:
+  - docker pull orbsoft/cowsay || true
 script:
-- docker build --tag orbsoft/cowsay .
-- docker run orbsoft/cowsay
+  - docker build --pull --cache-from orbsoft/cowsay --tag orbsoft/cowsay .
+  - docker run orbsoft/cowsay
 after_script:
-- docker images
+  - docker images
 before_deploy:
-- docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+  - echo $DOCKER_PASS | docker login --username "$DOCKER_USER" --password-stdin
 deploy:
   provider: script
   script: docker push orbsoft/cowsay
