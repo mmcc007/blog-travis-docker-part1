@@ -1,10 +1,19 @@
 sudo: required
 services:
-  - docker
-
+- docker
+env:
+  global:
+  - secure: q3ZtBJKVRwda2gDTD+ibFKhsGS1aIwqsrj/cIVkpXr/l9dkHvAm52oZ9hD2rB4Tu8Onz9OC39s8EDgcKiTX1TZtBpQdig97dEVLfjHTBjtWvZudXtBUwD6a2FJM/RpXceExnoeKdxbhbALi+cQRa5oQttfjl1yoBV8f8Pk3Qrj6qGGTLWgnKRNDSD5k+vmTyJcX7Do/PqkftSBu+SurDYnsZXOmAkzWDKcCgn9/M/n4Q727SF+9sLvVRrYLwcRRk+ppmzspJoODIj0QoFwBQTr5/vkNgb5x+QIyuKHZxwYSxKZXkGsS5ftGLFErWcjYMuO2oRTYHgPrcj6LD44S1ivsA/rEaEyxUGdLjHGq7HAGZ4v4SHbn1gMpOQqPMWWkTpBRsyd0eNNDUYJfmOeXdsr3qOpn6vLA258w5jggxm03nvZqwIyjOQcRBBf9rxJDUSUZicdC61OC3DX+RKLu9QPdS8Dxnnbc8d963n40OniinTrozZksv8ZqTFvs3RjOi2N/JR8t3s1cOwsTprJv2ZMaik2fVmq+sd4PEPguW1Zn4UH9gs5piaNz2BiuVWNFL/9GUM11uzcbzFWov/Vnc+N0PfLWKxDW8pG84QXwBBPX+m2KiI23sQFAAVxNO1FwXxfeZty/8rICthvUMVtlIpdd3leM3AEk+tP/g2YeUF10=
+  - secure: lt2w88nVK8iffmo/IatUVCnLTt3fDfcz4g7q/K4hp4z60nBIJpHjwL5ZO5lECMtsnFewnmXtpvFnUjbv6dGytBtvhKmBYbS3ElYVTG5OMzXP7yAEaXMCwN8Pvw0rt1tVUnaA6iWxhTUMJYwNhOmm781904OsupMYqZ6dQ8FAQUacwQkXq2C3/z/Za7Z8Ds6ICYJAEolqEdvBldbXxLlRTkEHss3qkcqa30tgVwStcbdw7q5Jqf2EHoo/7fUGf6x4OgZNWhnShMh+wc+ZjNQSrl9p4cmFIW/2+cSXBYvlYNEO0BpsK4Zh1yOJFF4zB+Rfs/74E8QjRA+eg/6PndX2JdAuu9XIhsOw24fbou4AP28W3tB7UHAyrsFN+sfNyporwwOE6vSE1D94737k24lBWnE01m5G38EpxqgiZhosH0RHXcfhtER67fgkXbM6qRwdsaLDokp5VWrah6QmRrypVT8rOJTfqYSFPANtrOpQBlSltFc+WPQY1tZf6RYX37Wj1xDmTKcqVkexkKsXxrWoCvaIVBhVdAt85tYhnp+qtYcS7r73nsamcYVvezIW3Yftn2/IVW1qEsC28VIKNNBkw3bW6AHziRrPqasBgLu2jAk+3Lo+FEvriEv6e82H+bZrVrEYeDtiA+Ymy2Rpvj3JJW+AqUQmHkMxbqFsiaJ9wlw=
 script:
-  - docker build --tag myimage .
-  - docker run myimage
-
+- docker build --tag orbsoft/cowsay .
+- docker run myorg/myimage
 after_script:
-  - docker images
+- docker images
+before_deploy:
+- docker login -u "$DOCKER_USER" -p "$DOCKER_PASS"
+deploy:
+  provider: script
+  script: docker push orbsoft/cowsay
+  on:
+    branch: master
